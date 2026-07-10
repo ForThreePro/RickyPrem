@@ -23,5 +23,3 @@ handler.command = /^(setwelcome|delwelcome)$/i;
 handler.admin = true;
 handler.group = true;
 export default handler;
-
-Acá igual solo diseño
