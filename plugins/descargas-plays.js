@@ -2,7 +2,7 @@ import yts from 'yt-search'
 import fetch from 'node-fetch'
 
 let handler = async (m, { conn, command, text, usedPrefix }) => {
-  if (!text) return m.reply(`🛸 *[ BOX BOT MD ]* 🌌\n\n🚩 *Escribe el nombre de lo que deseas buscar.*\n📌 Ejemplo: *${usedPrefix + command} king nasir*`)
+  if (!text) return m.reply(`⛈️ *RAYO PREM PLAY* 🌙\n\n⚡ *Escribe el nombre de lo que deseas buscar.*\n📌 *Ejemplo:* ${usedPrefix + command} king nasir`) // Cambiado
 
   await m.react('🔍')
 
@@ -10,7 +10,7 @@ let handler = async (m, { conn, command, text, usedPrefix }) => {
   let vid = res.videos[0]
   if (!vid) {
     await m.react('❌')
-    return m.reply(`⚠️ *No se encontraron resultados.*`)
+    return m.reply(`⛈️ *RAYO PREM ERROR* ➔ *No se encontraron resultados.*`) // Cambiado
   }
 
   await m.react('⏳')
@@ -23,21 +23,23 @@ let handler = async (m, { conn, command, text, usedPrefix }) => {
   let json = await (await fetch(apiUrl)).json()
   if (!json.status) {
     await m.react('❌')
-    return m.reply(`❌ *Error al procesar la descarga.*`)
+    return m.reply(`⛈️ *RAYO PREM ERROR* ➔ *Error al procesar la descarga.*`) // Cambiado
   }
 
-  let cap = `🛸 *[ BOX BOT MD ]* 🌌\n\n`
-  cap += `🎶 *Título:* ${vid.title}\n`
+  let cap = `⛈️ *RAYO PREM ${isVideo ? 'VIDEO' : 'AUDIO'}* 🌙\n\n` // Cambiado
+  cap += `⚡ *Título:* ${vid.title}\n`
   cap += `⏳ *Duración:* ${vid.timestamp}\n`
   cap += `👤 *Autor:* ${vid.author.name}\n`
+  cap += `👁️ *Vistas:* ${vid.views.toLocaleString()}\n`
   cap += `📁 *Formato:* ${isVideo ? 'VIDEO (MP4)' : 'AUDIO (MP3)'}\n\n`
-  cap += `⚙️ *Box Bot MD • Enviando...* 🌀`
+  cap += `🌩️ *Enviando...*\n⛈️ *Team Nightwish*` // Cambiado
 
   await conn.sendMessage(m.chat, { image: { url: vid.thumbnail }, caption: cap }, { quoted: m })
-  
+
   await conn.sendMessage(m.chat, { 
     [isVideo ? 'video' : 'audio']: { url: json.data.dl }, 
-    mimetype: isVideo ? 'video/mp4' : 'audio/mpeg' 
+    mimetype: isVideo ? 'video/mp4' : 'audio/mpeg',
+    fileName: `${vid.title}.${isVideo ? 'mp4' : 'mp3'}` // Agregado
   }, { quoted: m })
 
   await m.react('✅')
