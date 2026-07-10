@@ -5,22 +5,23 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
     }[(args[0] || '')]
 
     if (isClose === undefined) {
-        await conn.reply(m.chat, `⚠️ Elija una opción.\n\n*${usedPrefix + command}* abrir\n*${usedPrefix + command}* cerrar`, m)
+        await conn.reply(m.chat, `⛈️ *RAYO PREM GRUPO* 🌙\n\n⚡ *Elija una opción:*\n*${usedPrefix + command}* abrir\n*${usedPrefix + command}* cerrar`, m) // Cambiado
         return
     }
 
     await conn.groupSettingUpdate(m.chat, isClose)
 
     // Aviso de la acción realizada
-    let estado = isClose === 'announcement' ? 'cerrado 🔒' : 'abierto 🔓'
-    await conn.reply(m.chat, `🛸 *Grupo actualmente ${estado}*\n> Por: @${m.sender.split('@')[0]}`, m, {
+    let estado = isClose === 'announcement'? 'cerrado 🔒' : 'abierto 🔓'
+    let emoji = isClose === 'announcement'? '⛈️' : '⚡'
+    await conn.reply(m.chat, `${emoji} *RAYO PREM* ➔ Grupo ${estado}\n🌙 *Acción por:* @${m.sender.split('@')[0]}\n⚡ *Team Nightwish*`, m, { // Cambiado
         mentions: [m.sender]
     })
 }
 
 handler.help = ['grupo abrir', 'grupo cerrar']
 handler.tags = ['grupos']
-handler.command = ['group', 'grupo'] 
+handler.command = ['group', 'grupo']
 handler.admin = true
 handler.botAdmin = true
 
