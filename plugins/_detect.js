@@ -17,75 +17,116 @@ handler.before = async function (m, { conn, groupMetadata }) {
 
     switch (m.messageStubType) {
         case 21: // Cambiar nombre
-            txt = `⛈️ *¡ALERTA RAYO PREM!* ⚡🌩️\n\n` +
-                  `📢 *¡ATENCIÓN GRUPO!*\n` +
-                  `${usuario} *HA CAMBIADO EL NOMBRE* 💥\n\n` +
-                  `📝 *Nuevo Nombre:* _${m.messageStubParameters[0]}_\n` +
-                  `🌩️ *Lugar:* ${group}\n\n` +
-                  `> "El trueno ha hablado" ⚡`; break
+            txt = `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+│ 🌙 *REGISTRO DEL GRUPO*
+│
+│ 📢 *CAMBIO DE NOMBRE*
+│ 👤 *Usuario:* ${usuario}
+│ 📝 *Nuevo:* _${m.messageStubParameters[0]}_
+│ 🌩️ *Grupo:* ${group}
+│
+│ > *“El trueno ha renombrado”* ⚡
+╰─────────────────❒`; break
 
         case 22: // Cambiar foto
-            txt = `⛈️ *¡RAYO PREM INFORMA!* ⚡📸\n\n` +
-                  `🖼️ *¡NUEVA IMAGEN DETECTADA!*\n` +
-                  `${usuario} *HA RENOVADO LA FOTO DEL GRUPO* ✨\n\n` +
-                  `🌩️ *Grupo:* ${group}\n\n` +
-                  `> "Que brille con la fuerza del rayo" ⚡`; break
+            txt = `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+│ 🌙 *REGISTRO DEL GRUPO*
+│
+│ 📸 *CAMBIO DE FOTO*
+│ 👤 *Usuario:* ${usuario}
+│ 🖼️ *Nueva imagen establecida*
+│ 🌩️ *Grupo:* ${group}
+│
+│ > *“Que brille bajo la noche”* ⚡
+╰─────────────────❒`; break
 
         case 23: // Cambiar link
-            txt = `⛈️ *¡CUIDADO!* ⚡🔗\n\n` +
-                  `🚨 *¡LINK RESETEADO!*\n` +
-                  `${usuario} *HA CAMBIADO EL ENLACE DEL GRUPO* 💣\n\n` +
-                  `🌩️ *Grupo:* ${group}\n\n` +
-                  `> "El portal ha sido alterado" ⚡`; break
+            txt = `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+│ ⛈️ *ALERTA DE SEGURIDAD*
+│
+│ 🔗 *LINK RESETEADO*
+│ 👤 *Usuario:* ${usuario}
+│ 🌩️ *Grupo:* ${group}
+│
+│ > *“El portal ha sido alterado”* ⚡
+╰─────────────────❒`; break
 
         case 25: // Cambiar ajustes
-            txt = `⛈️ *¡SISTEMA MODIFICADO!* ⚡⚙️\n` +
-                  `🔐 *¡CONFIGURACIÓN ALTERADA!*\n` +
-                  `${usuario} *HA CAMBIADO LOS PERMISOS* 🛡️\n\n` +
-                  `📊 *Estado:* ${m.messageStubParameters[0] == 'on'? '*SOLO ADMINS* 🔒' : '*TODOS* 🔓'} pueden editar info\n` +
-                  `> "El control está en nuevas manos" ⚡`; break
+            txt = `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+│ 🛡️ *AJUSTES MODIFICADOS*
+│
+│ 👤 *Usuario:* ${usuario}
+│ ⚙️ *Permisos:* ${m.messageStubParameters[0] == 'on'? '*SOLO ADMINS* 🔒' : '*TODOS* 🔓'}
+│ 📊 *Edición de info de grupo*
+│
+│ > *“El control cambió de manos”* ⚡
+╰─────────────────❒`; break
 
         case 26: // Abrir/Cerrar
-            txt = `⛈️ *¡ESTADO DEL GRUPO!* ⚡🗣️\n\n` +
-                  `📢 *¡GRUPO ${m.messageStubParameters[0] == 'on'? 'CERRADO' : 'ABIERTO'}!*\n` +
-                  `${usuario} *HA ${m.messageStubParameters[0] == 'on'? 'SELLADO' : 'LIBERADO'} EL CHAT* 🌩️\n\n` +
-                  `💬 *Ahora:* ${m.messageStubParameters[0] == 'on'? '*SOLO ADMINS* pueden hablar' : '*TODOS* pueden hablar'}\n\n` +
-                  `> "Que se escuche el trueno" ⚡`; break
+            txt = `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+│ 🌙 *ESTADO DEL CHAT*
+│
+│ 👤 *Usuario:* ${usuario}
+│ 🗣️ *Modo:* ${m.messageStubParameters[0] == 'on'? '*SOLO ADMINS* 🔒' : '*TODOS* 🔓'}
+│ 📢 *Grupo:* ${m.messageStubParameters[0] == 'on'? 'CERRADO' : 'ABIERTO'}
+│
+│ > *“Que se escuche el trueno”* ⚡
+╰─────────────────❒`; break
 
         case 29: // Dar admin
-            txt = `⛈️ *¡ASCENSO DIVINO!* ⚡👑\n\n` +
-                  `🌟 *¡NUEVO ADMIN EN EL TRONO!*\n` +
-                  `@${m.messageStubParameters[0].split('@')[0]} *HA SIDO CORONADO ADMIN* ⚡\n\n` +
-                  `⚡ *Por orden de:* ${usuario}\n\n` +
-                  `> "Que gobierne con poder" ⚡`; break
+            txt = `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+│ 👑 *ASCENSO DIVINO*
+│
+│ ⚡ *Nuevo Admin:* @${m.messageStubParameters[0].split('@')[0]}
+│ 👤 *Otorgado por:* ${usuario}
+│ 🌙 *Rango:* Administrador
+│
+│ > *“Que gobierne con poder”* ⚡
+╰─────────────────❒`; break
 
         case 30: // Quitar admin
-            txt = `⛈️ *¡DESTITUCIÓN!* ⚡📉\n\n` +
-                  `💥 *¡ADMIN CAÍDO!*\n` +
-                  `@${m.messageStubParameters[0].split('@')[0]} *HA PERDIDO SUS PODERES* 🗑️\n\n` +
-                  `⚡ *Por orden de:* ${usuario}\n\n` +
-                  `> "El rayo no perdona" ⚡`; break
+            txt = `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+│ 📉 *DESTITUCIÓN*
+│
+│ 💥 *Admin caído:* @${m.messageStubParameters[0].split('@')[0]}
+│ 👤 *Ejecutado por:* ${usuario}
+│ 🗑️ *Rango removido*
+│
+│ > *“El rayo no perdona”* ⚡
+╰─────────────────❒`; break
 
         case WAMessageStubType.GROUP_PARTICIPANT_ADD:
-            txt = `⛈️ *¡NUEVO GUERRERO!* ⚡🌩️\n\n` +
-                  `🔥 *¡ALERTA DE INGRESO!*\n` +
-                  `@${m.messageStubParameters[0].split('@')[0]} *HA ENTRADO AL GRUPO* 💥\n\n` +
-                  `🌩️ *Grupo:* ${group}\n\n` +
-                  `> "Bienvenido... o prepárate" ⚡`; break
+            txt = `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+│ 🌩️ *NUEVO INTEGRANTE*
+│
+│ 🔥 *Bienvenido:* @${m.messageStubParameters[0].split('@')[0]}
+│ 🌙 *Grupo:* ${group}
+│ ⚡ *Estado:* Ingreso registrado
+│
+│ > *“Prepárate para la tormenta”* ⛈️
+╰─────────────────❒`; break
 
         case WAMessageStubType.GROUP_PARTICIPANT_LEAVE:
-            txt = `⛈️ *¡BAJA CONFIRMADA!* ⚡💨\n\n` +
-                  `😔 *¡ALGUIEN SE FUE!*\n` +
-                  `@${m.messageStubParameters[0].split('@')[0]} *HA ABANDONADO EL GRUPO* 🌫️\n\n` +
-                  `🌩️ *Grupo:* ${group}\n\n` +
-                  `> "Que los vientos lo acompañen" ⚡`; break
+            txt = `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+│ 💨 *SALIDA REGISTRADA*
+│
+│ 😔 *Se fue:* @${m.messageStubParameters[0].split('@')[0]}
+│ 🌙 *Grupo:* ${group}
+│ 🌫️ *Estado:* Abandonó el grupo
+│
+│ > *“Que los vientos lo guíen”* ⚡
+╰─────────────────❒`; break
 
         case WAMessageStubType.GROUP_PARTICIPANT_REMOVE:
-            txt = `⛈️ *¡EXPULSIÓN EJECUTADA!* ⚡🚮\n\n` +
-                  `💣 *¡ACCESO DENEGADO!*\n` +
-                  `@${m.messageStubParameters[0].split('@')[0]} *HA SIDO ELIMINADO* 🔥\n\n` +
-                  `⚡ *Por orden de:* ${usuario}\n\n` +
-                  `> "El trueno ha juzgado" ⚡`; break
+            txt = `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+│ 🚮 *EXPULSIÓN EJECUTADA*
+│
+│ 💣 *Eliminado:* @${m.messageStubParameters[0].split('@')[0]}
+│ 👤 *Por orden de:* ${usuario}
+│ ⛈️ *Causa:* Violación de reglas
+│
+│ > *“El trueno ha juzgado”* ⚡
+╰─────────────────❒`; break
     }
 
     if (txt) {
