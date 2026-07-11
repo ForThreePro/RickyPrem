@@ -5,7 +5,7 @@ const handler = async (m, { isOwner, isAdmin, conn, participants, args }) => {
       return;
     }
 
-    const customMessage = args.join(' ') || '⛈️ Invocación RAYO PREM';
+    const customMessage = args.join(' ') || '⛈️ Invocación del Trueno';
     const groupMetadata = await conn.groupMetadata(m.chat).catch(() => ({ subject: 'Grupo', participants: [] }));
     const groupName = groupMetadata.subject;
 
@@ -52,16 +52,15 @@ const handler = async (m, { isOwner, isAdmin, conn, participants, args }) => {
 
     const orderedFlags = countryFlags.map(c => c.bandera).concat(['🚩']);
 
-    // Texto con estética RAYO PREM
-    let messageText = `⛈️ *RAYO PREM* ➔ INVOCACIÓN 🌙
-╔════════════╗
-   🌐 *${groupName}*
-╚════════════╝
-
-⚡ *Integrantes:* ${participants.length}
-⚡ *Mensaje:* ${customMessage}
-
-╭─── 🌍 INTEGRANTES POR PAÍS ───╮
+    // Texto con estética Team Nightwish
+    let messageText = `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+│ 📢 *INVOCACIÓN GENERAL*
+│
+│ 🌐 *Grupo:* ${groupName}
+│ ⚡ *Integrantes:* ${participants.length}
+│ 🌙 *Mensaje:* ${customMessage}
+│
+├─❒ *INTEGRANTES POR PAÍS* ❒
 `;
 
     for (const flag of orderedFlags) {
@@ -74,9 +73,10 @@ const handler = async (m, { isOwner, isAdmin, conn, participants, args }) => {
       }
     }
 
-    messageText += `╰────────────────────────────╯
-
-⛈️ *RAYO PREM* | *Team Nightwish* ⚡`;
+    messageText += `╰─────────────────❒
+│
+│ > *“Que el trueno los reúna”*
+╰─────────────────❒`;
 
     // NUEVO: Detectar foto del grupo
     let img
@@ -93,8 +93,12 @@ const handler = async (m, { isOwner, isAdmin, conn, participants, args }) => {
     }, { quoted: m });
 
   } catch (error) {
-    console.error("[ERROR EN RAYO]:", error);
-    conn.reply(m.chat, `⛈️ *RAYO PREM ERROR* ➔ Ocurrió un error al ejecutar el comando.`, m);
+    console.error("[ERROR EN NIGHTWISH]:", error);
+    conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+│ ⛈️ *ERROR*
+│
+│ ⚡ *Ocurrió un error al ejecutar el comando*
+╰─────────────────❒`, m);
   }
 };
 
