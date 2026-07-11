@@ -4,7 +4,7 @@ let mutedUsers = new Set();
 
 let handler = async (m, { conn, text, command, participants, usedPrefix }) => {
     const isGroup = m.isGroup
-    if (!isGroup) return m.reply(`╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ ❌ *Solo funciona en grupos*\n╰─────────────────❒`)
+    if (!isGroup) return
 
     // ===== LINK =====
     if (/^(link|linkgroup)$/i.test(command)) {
@@ -33,7 +33,7 @@ let handler = async (m, { conn, text, command, participants, usedPrefix }) => {
         if (!mentionedJid) return m.reply(`╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
 │ 🔇 *MUTE SYSTEM*
 │
-│ ⚡ *Etiqueta o responde a alguien*
+│ ⚡ *Uso:* ${usedPrefix}mute @usuario
 ╰─────────────────❒`)
 
         let isUserAdmin = participants.find(p => p.id === mentionedJid)?.admin;
@@ -59,23 +59,36 @@ let handler = async (m, { conn, text, command, participants, usedPrefix }) => {
         }
     }
 
+    // ===== NOTI / N / HIDETAG =====
+    if (/^(n|noti|notifi|notificar|notify|hidetag|hidet|aviso)$/i.test(command)) {
+        let users = participants.map(u => conn.decodeJid(u.id))
+        let baseText = text || ''
+        if (!baseText && m.quoted) baseText = m.quoted.text
+
+        let finalText = `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+│ 📢 *AVISO GENERAL*
+│
+│ ${baseText}
+│
+│ > *“Atención a todos los guerreros”*
+╰─────────────────❒`
+
+        const msg = generateWAMessageFromContent(m.chat, {
+            extendedTextMessage: { text: finalText, contextInfo: { mentionedJid: users } }
+        }, {})
+
+        return await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
+    }
+
     // ===== PROMOTE / DEMOTE =====
     if (/^(promote|promover|daradmin|demote|degradar|quitaradmin)$/i.test(command)) {
-        if (!m.mentionedJid[0] &&!m.quoted) {
-            let texto = `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
-│ 🛡️ *ADMIN CONTROL*
-│
-│ ⚡ *Menciona o responde al usuario*
-│ 🌙 *para ${/^(promote|promover|daradmin)$/i.test(command)? 'promover' : 'degradar'} como admin*
-╰─────────────────❒`
-            return m.reply(texto, m.chat, { mentions: conn.parseMention(texto) })
-        }
+        if (!m.mentionedJid[0] &&!m.quoted) return m.reply(`╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ ⚡ *Menciona a alguien*\n╰─────────────────❒`)
 
         let user = m.mentionedJid[0]? m.mentionedJid[0] : m.quoted.sender
         let action = /^(promote|promover|daradmin)$/i.test(command)? 'promote' : 'demote'
 
         let msgAccion = action === 'promote'
-        ? `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ ⚡ *PROMOCIÓN*\n│\n│ 👑 *@${user.split('@')[0]} ahora es Admin*\n│ 🌙 *Por:* @${m.sender.split('@')[0]}\n╰─────────────────❒`
+       ? `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ ⚡ *PROMOCIÓN*\n│\n│ 👑 *@${user.split('@')[0]} ahora es Admin*\n│ 🌙 *Por:* @${m.sender.split('@')[0]}\n╰─────────────────❒`
           : `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ ⛈️ *DEGRADACIÓN*\n│\n│ 🛡️ *@${user.split('@')[0]} ya no es Admin*\n│ 🌙 *Por:* @${m.sender.split('@')[0]}\n╰─────────────────❒`
 
         await conn.groupParticipantsUpdate(m.chat,, action)
@@ -85,111 +98,64 @@ let handler = async (m, { conn, text, command, participants, usedPrefix }) => {
     // ===== BANCHAT / UNBANCHAT =====
     if (/^(banchat|banearchat|unbanchat|desbanearchat)$/i.test(command)) {
         let chat = global.db.data.chats[m.chat]
-        let type = command.toLowerCase()
-
-        switch (type) {
-            case 'banchat': case 'banearchat':
-                if (chat.isBanned) return m.reply(`╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ ⛈️ *CHAT YA BANEADO*\n│\n│ ⚡ *El bot está desactivado aquí*\n╰─────────────────❒`)
-                chat.isBanned = true
-                return await conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
-│ 🚫 *CHAT BANEADO*
-│
-│ ⚡ *El bot ha sido desactivado*
-│ 🌙 *No responderé a comandos*
-╰─────────────────❒`, m)
-
-            case 'unbanchat': case 'desbanearchat':
-                if (!chat.isBanned) return m.reply(`╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ ✅ *CHAT NO ESTÁ BANEADO*\n│\n│ ⚡ *El bot está activo*\n╰─────────────────❒`)
-                chat.isBanned = false
-                return await conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
-│ ✅ *CHAT DESBANEADO*
-│
-│ ⚡ *El bot vuelve a estar activo*
-│ 🌙 *Todos los comandos disponibles*
-╰─────────────────❒`, m)
+        if (/^(banchat|banearchat)$/i.test(command)) {
+            if (chat.isBanned) return m.reply(`╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ ⛈️ *CHAT YA BANEADO*\n╰─────────────────❒`)
+            chat.isBanned = true
+            return await conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ 🚫 *CHAT BANEADO*\n│\n│ ⚡ *El bot ha sido desactivado*\n╰─────────────────❒`, m)
+        } else {
+            if (!chat.isBanned) return m.reply(`╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ ✅ *CHAT NO ESTÁ BANEADO*\n╰─────────────────❒`)
+            chat.isBanned = false
+            return await conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ ✅ *CHAT DESBANEADO*\n│\n│ ⚡ *El bot vuelve a estar activo*\n╰─────────────────❒`, m)
         }
     }
 
     // ===== DELETE =====
     if (/^del(ete)?$/i.test(command)) {
-        if (!m.quoted) return conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ 🗑️ *ELIMINAR MENSAJE*\n│\n│ ⚡ *Responde al mensaje*\n╰─────────────────❒`, m)
+        if (!m.quoted) return m.reply(`╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ 🗑️ *Responde al mensaje*\n╰─────────────────❒`)
         try {
-            let delet = m.message.extendedTextMessage.contextInfo.participant
-            let bang = m.message.extendedTextMessage.contextInfo.stanzaId
+            let delet = m.message.extendedTextMessage?.contextInfo?.participant
+            let bang = m.message.extendedTextMessage?.contextInfo?.stanzaId
             await conn.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: false, id: bang, participant: delet }})
         } catch {
             await conn.sendMessage(m.chat, { delete: m.quoted.vM.key })
         }
-        return conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ 🗑️ *MENSAJE ELIMINADO*\n│\n│ ⚡ *Por:* @${m.sender.split('@')[0]}\n╰─────────────────❒`, m, { mentions: [m.sender] })
-    }
-
-    // ===== HIDETAG =====
-    if (/^(hidetag|notify|notificar|notifi|noti|n|hidet|aviso)$/i.test(command)) {
-        let users = participants.map(u => conn.decodeJid(u.id))
-        let q = m.quoted? m.quoted : m
-        let c = m.quoted? m.quoted : m.msg
-        let baseText = text || q.text || c || ''
-        let finalText = `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
-│ 📢 *AVISO GENERAL*
-│
-│ ${baseText}
-│
-│ > *“Atención a todos los guerreros”*
-╰─────────────────❒`
-
-        const msg = conn.cMod(
-            m.chat,
-            generateWAMessageFromContent(m.chat, {
-                [c.toJSON? q.mtype : 'extendedTextMessage']: c.toJSON? c.toJSON() : { text: finalText }
-            }, { userJid: conn.user.id }),
-            finalText,
-            conn.user.jid,
-            { mentions: users }
-        )
-        return await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id })
+        return m.reply(`╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ 🗑️ *MENSAJE ELIMINADO*\n│\n│ ⚡ *Por:* @${m.sender.split('@')[0]}\n╰─────────────────❒`, { mentions: [m.sender] })
     }
 
     // ===== KICK =====
     if (/^(kick|echar|hechar|sacar|ban)$/i.test(command)) {
-        let mentionedJid = m.mentionedJid && m.mentionedJid[0]? m.mentionedJid[0] : m.quoted? m.quoted.sender : null
-        if (!mentionedJid) return conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ 🚮 *EXPULSAR USUARIO*\n│\n│ ⚡ *Menciona o responde*\n╰─────────────────❒`, m)
+        let mentionedJid = m.mentionedJid[0]? m.mentionedJid[0] : m.quoted? m.quoted.sender : null
+        if (!mentionedJid) return m.reply(`╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ 🚮 *Menciona a alguien*\n╰─────────────────❒`)
 
-        try {
-            let groupMetadata = await conn.groupMetadata(m.chat)
-            let ownerGroup = groupMetadata.owner || m.chat.split`-`[0] + '@s.whatsapp.net'
-            let ownerBot = global.owner[0][0] + '@s.whatsapp.net'
+        let groupMetadata = await conn.groupMetadata(m.chat)
+        let ownerGroup = groupMetadata.owner || m.chat.split`-`[0] + '@s.whatsapp.net'
+        let ownerBot = global.owner[0][0] + '@s.whatsapp.net'
 
-            if (mentionedJid === conn.user.jid) return conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ ❌ *No puedo expulsarme*\n╰─────────────────❒`, m)
-            if (mentionedJid === ownerGroup) return conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ ❌ *No puedo expulsar al creador*\n╰─────────────────❒`, m)
-            if (mentionedJid === ownerBot) return conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ ❌ *No puedo expulsar al dueño*\n╰─────────────────❒`, m)
+        if (mentionedJid === conn.user.jid) return m.reply(`╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ ❌ *No puedo expulsarme*\n╰─────────────────❒`)
+        if (mentionedJid === ownerGroup) return m.reply(`╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ ❌ *No puedo expulsar al creador*\n╰─────────────────❒`)
+        if (mentionedJid === ownerBot) return m.reply(`╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ ❌ *No puedo expulsar al dueño*\n╰─────────────────❒`)
 
-            await conn.groupParticipantsUpdate(m.chat, [mentionedJid], 'remove')
-            return conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+        await conn.groupParticipantsUpdate(m.chat, [mentionedJid], 'remove')
+        return m.reply(`╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
 │ 🚮 *USUARIO EXPULSADO*
 │
 │ ⚡ *@${mentionedJid.split('@')[0]} fue sacado*
-│ 🌙 *Juicio del trueno aplicado*
-╰─────────────────❒`, m, { mentions: [mentionedJid] })
-        } catch (e) {
-            return conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒\n│ ⛈️ *ERROR*\n│\n│ ⚡ *${e.message}*\n╰─────────────────❒`, m)
-        }
+╰─────────────────❒`, { mentions: [mentionedJid] })
     }
 }
 
-// Anti-mute system
-handler.before = async (m, { conn, isAdmin }) => {
-    if (mutedUsers.has(m.sender)) {
+// Anti-mute: Borra mensajes de usuarios muteados
+handler.before = async (m, { conn }) => {
+    if (mutedUsers.has(m.sender) && m.isGroup) {
         try {
             await conn.sendMessage(m.chat, { delete: m.key });
-        } catch (e) {
-            console.error(e);
-        }
+        } catch (e) {}
     }
 };
 
-handler.help = ['link', 'mute @', 'unmute @', 'promote', 'demote', 'banchat', 'unbanchat', 'delete', 'hidetag', 'kick']
+handler.help = ['link', 'mute @', 'unmute @', 'n texto', 'promote', 'demote', 'banchat', 'unbanchat', 'delete', 'kick']
 handler.tags = ['grupos']
-handler.command = /^(link|linkgroup|mute|unmute|promote|promover|daradmin|demote|degradar|quitaradmin|banchat|banearchat|unbanchat|desbanearchat|del(ete)?|hidetag|notify|notificar|notifi|noti|n|hidet|aviso|kick|echar|hechar|sacar|ban)$/i
+handler.command = /^(link|linkgroup|mute|unmute|n|noti|notifi|notificar|notify|hidetag|hidet|aviso|promote|promover|daradmin|demote|degradar|quitaradmin|banchat|banearchat|unbanchat|desbanearchat|del(ete)?|kick|echar|hechar|sacar|ban)$/i
 handler.group = true
 handler.admin = true
 handler.botAdmin = true
