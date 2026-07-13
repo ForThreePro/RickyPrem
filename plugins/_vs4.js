@@ -33,7 +33,7 @@ let handler = async (m, { conn }) => {
 }
 
 handler.help = ['vs4']
-handler.tags = ['ff', 'teamnightwish']
+handler.tags = ['ff']
 handler.command = /^(vs4)$/i
 handler.group = true
 
