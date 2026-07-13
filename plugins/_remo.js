@@ -8,25 +8,25 @@ let handler = async (m, { conn, usedPrefix, command }) => {
 
     if (!mime) throw `⚡ *Rayo Prem Bot* 🍓\n\nResponde a una imagen con *${usedPrefix + command}*`;
     if (!/image\/(jpe?g|png)/.test(mime)) {
-        throw `⚠️ *Formato no soportado.* Solo JPG/PNG. Envía la imagen, no sticker`;
+        throw `⚠️ *Formato no soportado.* Solo JPG/PNG. Envía la imagen normal`;
     }
 
     const API_KEY = "FEx4CYmYN1QRQWD1mbZp87jV";
 
     await m.react('⏳');
+    await m.reply('⚡ *Quitando fondo modo rayo...*');
 
     try {
         let img = await q.download();
         if (!img) throw '❌ No se pudo descargar la imagen';
         if (img.length > 12 * 1024 * 1024) throw '❌ *Imagen muy pesada.* Máximo 12MB';
 
-        // ARREGLO PRINCIPAL: Mandar como base64
         let base64Img = img.toString('base64');
         
         let form = new FormData();
         form.append('image_file_b64', base64Img);
         form.append('size', 'auto');
-        form.append('bg_color', 'transparent');
+        // QUITAMOS bg_color porque daba error
 
         let res = await fetch('https://api.remove.bg/v1.0/removebg', {
             method: 'POST',
