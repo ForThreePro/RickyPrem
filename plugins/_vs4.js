@@ -1,7 +1,76 @@
-let handler = async (m, { conn, command }) => {
-    
-    let titulares = command === 'vs6' ? 6 : 4
-    let suplentes = command === 'vs6' ? 3 : 2
+let handler = async (m, { conn, participants, groupMetadata, command }) => {
+
+    // SI ES GDC
+    if (command === 'gdc' || command === 'guerradeclanes' || command === 'guerra') {
+        const pp = await conn.profilePictureUrl(m.chat, 'image').catch(_ => null) || './storage/img/siskedurl.jpg'
+        const groupAdmins = participants.filter(p => p.admin)
+        const owner = groupMetadata.owner || groupAdmins.find(p => p.admin === 'superadmin')?.id || m.chat.split`-`[0] + '@s.whatsapp.net'
+
+        let text = `🌙✧･ﾟ: *🌌 𝙶𝙳𝙲 - 𝚃𝙴𝙰𝙼 𝙽𝙸𝙶𝙷𝚃𝚆𝙸𝚂𝙷 🌌* :ﾟ･✧🌙
+
+👑 𝗖𝗟𝗔𝗡: ${groupMetadata.subject}
+⏰ 𝗛𝗢𝗥𝗔𝗥𝗜𝗢: __:__ 🇦🇷 / __:__ 🇵🇪
+
+╭──────────────╮
+│ㅤ💫 𝗘𝗦𝗖𝗨𝗔𝗗𝗥𝗔 ➹𝟏
+│
+│👑 ➤ ・
+│⚜️ ➤ ・
+│⚜️ ➤ ・
+│⚜️ ➤ ・
+│
+│💫 𝗘𝗦𝗖𝗨𝗔𝗗𝗥𝗔 ➹𝟐
+│
+│👑 ➤ ・
+│⚜️ ➤ ・
+│⚜️ ➤ ・
+│⚜️ ➤ ・
+│
+│💫 𝗘𝗦𝗖𝗨𝗔𝗗𝗥𝗔 ➹𝟑
+│
+│👑 ➤ ・
+│⚜️ ➤ ・
+│⚜️ ➤ ・
+│⚜️ ➤ ・
+│
+│💫 𝗘𝗦𝗖𝗨𝗔𝗗𝗥𝗔 ➹𝟒
+│
+│👑 ➤ ・
+│⚜️ ➤ ・
+│⚜️ ➤ ・
+│⚜️ ➤ ・
+│
+│💫 𝗘𝗦𝗖𝗨𝗔𝗗𝗥𝗔 ➹𝟓
+│
+│👑 ➤ ・
+│⚜️ ➤ ・
+│⚜️ ➤ ・
+│⚜️ ➤ ・
+│
+│💫 𝗘𝗦𝗖𝗨𝗔𝗗𝗥𝗔 ➹𝟔
+│
+│👑 ➤ ・
+│⚜️ ➤ ・
+│⚜️ ➤ ・
+│⚜️ ➤ ・
+│
+│ㅤ🌙 𝗦𝗨𝗣𝗟𝗘𝗡𝗧𝗘𝗦:
+│💜 ➤ ・
+│💜 ➤ ・
+│💜 ➤ ・
+│💜 ➤ ・
+│💜 ➤ ・
+│💜 ➤ ・
+╰─────────────╯
+
+🌙✧･ﾟ: *Llenen y copien* :ﾟ･✧🌙`.trim()
+
+        return await conn.sendFile(m.chat, pp, 'gdc.jpg', text, m, false, { mentions: [...groupAdmins.map(v => v.id), owner] })
+    }
+
+    // SI ES VS4 O VS6
+    let titulares = command === 'vs6'? 6 : 4
+    let suplentes = command === 'vs6'? 3 : 2
 
     let listaTitulares = ''
     for(let i = 1; i <= titulares; i++) {
@@ -16,7 +85,7 @@ let handler = async (m, { conn, command }) => {
     let plantilla = `🌙✧･ﾟ: *🌌 𝚃𝙴𝙰𝙼 𝙽𝙸𝙶𝙷𝚃𝚆𝙸𝚂𝙷 🌌* :ﾟ･✧🌙
 
 👑 𝗘𝗡𝗖𝗔𝗥𝗚𝗔𝗗𝗔: ・
-⏰ 𝗛𝗢𝗥𝗔: __:__ 🇦🇷  /  __:__ 🇵🇪
+⏰ 𝗛𝗢𝗥𝗔: __:__ 🇦🇷 / __:__ 🇵🇪
 
 ───────────────
     ✨ 𝗧𝗜𝗧𝗨𝗟𝗔𝗥𝗘𝗦 ✨
@@ -36,10 +105,10 @@ ${listaSuplentes}
     await conn.sendMessage(m.chat, { text: plantilla }, { quoted: m })
 }
 
-handler.help = ['vs4', 'vs6']
+handler.help = ['vs4', 'vs6', 'gdc']
 handler.tags = ['ff']
-handler.command = /^(vs4|vs6)$/i
+handler.command = /^(vs4|vs6|gdc|guerradeclanes|guerra)$/i
 handler.group = true
-handler.admin = true  // SOLO ADMINS
+handler.admin = true // SOLO ADMINS
 
 export default handler
