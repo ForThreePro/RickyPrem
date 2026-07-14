@@ -1,7 +1,7 @@
 let handler = async (m, { conn, participants, usedPrefix, command }) => {
     let mentionedJid = m.mentionedJid && m.mentionedJid[0]? m.mentionedJid[0] : m.quoted? m.quoted.sender : null
 
-    if (!mentionedJid) return conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+    if (!mentionedJid) return conn.reply(m.chat, `╭─❒ *『 𝗥𝗜𝗖𝗞𝗬 𝗕𝗢𝗧 𝗣𝗥𝗘𝗠 』* ❒
 │ 🚮 *EXPULSAR USUARIO*
 │
 │ ⚡ *Menciona a un usuario o responde a un mensaje*
@@ -12,35 +12,35 @@ let handler = async (m, { conn, participants, usedPrefix, command }) => {
         let ownerGroup = groupMetadata.owner || m.chat.split`-`[0] + '@s.whatsapp.net'
         let ownerBot = global.owner[0][0] + '@s.whatsapp.net'
 
-        if (mentionedJid === conn.user.jid) return conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+        if (mentionedJid === conn.user.jid) return conn.reply(m.chat, `╭─❒ *『 𝗥𝗜𝗖𝗞𝗬 𝗕𝗢𝗧 𝗣𝗥𝗘𝗠 』* ❒
 │ ❌ *ERROR*
 │
 │ ⚡ *No puedo expulsarme a mi mismo*
 ╰─────────────────❒`, m)
-        if (mentionedJid === ownerGroup) return conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+        if (mentionedJid === ownerGroup) return conn.reply(m.chat, `╭─❒ *『 𝗥𝗜𝗖𝗞𝗬 𝗕𝗢𝗧 𝗣𝗥𝗘𝗠 』* ❒
 │ ❌ *ERROR*
 │
 │ ⚡ *No puedo expulsar al creador del grupo*
 ╰─────────────────❒`, m)
-        if (mentionedJid === ownerBot) return conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+        if (mentionedJid === ownerBot) return conn.reply(m.chat, `╭─❒ *『 𝗥𝗜𝗖𝗞𝗬 𝗕𝗢𝗧 𝗣𝗥𝗘𝗠 』* ❒
 │ ❌ *ERROR*
 │
 │ ⚡ *No puedo expulsar al dueño del bot*
 ╰─────────────────❒`, m)
 
         await conn.groupParticipantsUpdate(m.chat, [mentionedJid], 'remove')
-        conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+        conn.reply(m.chat, `╭─❒ *『 𝗥𝗜𝗖𝗞𝗬 𝗕𝗢𝗧 𝗣𝗥𝗘𝗠 』* ❒
 │ 🚮 *USUARIO EXPULSADO*
 │
 │ ⚡ *@${mentionedJid.split('@')[0]} fue sacado del grupo*
-│ 🌙 *Juicio del trueno ejecutado*
+│ 👾 *Acción ejecutada por un admin*
 ╰─────────────────❒`, m, { mentions: [mentionedJid] })
     } catch (e) {
-        conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+        conn.reply(m.chat, `╭─❒ *『 𝗥𝗜𝗖𝗞𝗬 𝗕𝗢𝗧 𝗣𝗥𝗘𝗠 』* ❒
 │ ⛈️ *ERROR*
 │
 │ ⚡ *Ocurrió un problema*
-│ 🌙 *${e.message}*
+│ 👾 *${e.message}*
 ╰─────────────────❒`, m)
     }
 }
