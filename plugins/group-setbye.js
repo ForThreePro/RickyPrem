@@ -1,10 +1,10 @@
 const handler = async (m, { conn, text, command, isAdmin, isOwner }) => {
     if (!m.isGroup || (!isAdmin &&!isOwner)) {
-        return m.reply(`╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+        return m.reply(`╭─❒ *『 𝗥𝗜𝗖𝗞𝗬 𝗕𝗢𝗧 𝗣𝗥𝗘𝗠 』* ❒
 │ ⛈️ *ACCESO DENEGADO*
 │
 │ ⚡ *Solo los admins o el dueño*
-│ 🌙 *pueden controlar la tormenta*
+│ 👾 *pueden controlar el bot*
 ╰─────────────────❒`);
     }
 
@@ -13,16 +13,16 @@ const handler = async (m, { conn, text, command, isAdmin, isOwner }) => {
     chat = global.db.data.chats[m.chat]
 
     if (command === 'setbye') {
-        if (!text) return m.reply(`╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+        if (!text) return m.reply(`╭─❒ *『 𝗥𝗜𝗖𝗞𝗬 𝗕𝗢𝗧 𝗣𝗥𝗘𝗠 』* ❒
 │ 🌩️ *CONFIGURAR DESPEDIDA*
 │
 │ ⚡ *Falta el mensaje*
 │
 │ 💡 *Ejemplo:*
-│ .setbye 💨 @user fue consumido por la tormenta ⚡
+│ .setbye 💨 @user salió del grupo
 ╰─────────────────❒`);
         chat.customBye = text.trim();
-        return m.reply(`╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+        return m.reply(`╭─❒ *『 𝗥𝗜𝗖𝗞𝗬 𝗕𝗢𝗧 𝗣𝗥𝗘𝗠 』* ❒
 │ ✅ *DESPEDIDA GUARDADA*
 │
 │ 📝 *Vista previa:*
@@ -32,13 +32,13 @@ const handler = async (m, { conn, text, command, isAdmin, isOwner }) => {
 ╰─────────────────❒`);
     }
     if (command === 'delbye') {
-        if (!chat.customBye) return m.reply(`╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+        if (!chat.customBye) return m.reply(`╭─❒ *『 𝗥𝗜𝗖𝗞𝗬 𝗕𝗢𝗧 𝗣𝗥𝗘𝗠 』* ❒
 │ ⚠️ *SIN DESPEDIDA*
 │
-│ 🌙 *No tienes una despedida editada*
+│ 👾 *No tienes una despedida editada*
 ╰─────────────────❒`);
         delete chat.customBye;
-        return m.reply(`╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
+        return m.reply(`╭─❒ *『 𝗥𝗜𝗖𝗞𝗬 𝗕𝗢𝗧 𝗣𝗥𝗘𝗠 』* ❒
 │ ✅ *DESPEDIDA ELIMINADA*
 │
 │ 🗑️ *Se borró el mensaje personalizado*
