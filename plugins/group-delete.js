@@ -1,32 +1,18 @@
 let handler = async (m, { conn, usedPrefix, command }) => {
 
-if (!m.quoted) return conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
-│ 🗑️ *ELIMINAR MENSAJE*
-│
-│ ⚡ *Responde al mensaje que deseas borrar*
-╰─────────────────❒`, m)
+if (!m.quoted) return conn.reply(m.chat, `✍️ Responde al mensaje que deseas eliminar.`, m, rcanal)
 try {
 let delet = m.message.extendedTextMessage.contextInfo.participant
 let bang = m.message.extendedTextMessage.contextInfo.stanzaId
-await conn.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: false, id: bang, participant: delet }})
-conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
-│ 🗑️ *MENSAJE ELIMINADO*
-│
-│ ⚡ *Acción por:* @${m.sender.split('@')[0]}
-│ 🌙 *Juicio del trueno aplicado*
-╰─────────────────❒`, m, { mentions: [m.sender] })
- } catch {
-await conn.sendMessage(m.chat, { delete: m.quoted.vM.key })
-conn.reply(m.chat, `╭─❒ *『 𝗧𝗘𝗔𝗠 𝗡𝗜𝗚𝗛𝗧𝗪𝗜𝗦𝗛 』* ❒
-│ 🗑️ *MENSAJE ELIMINADO*
-│
-│ ⚡ *Acción por:* @${m.sender.split('@')[0]}
-│ 🌙 *Juicio del trueno aplicado*
-╰─────────────────❒`, m, { mentions: [m.sender] })
-}
+return conn.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: false, id: bang, participant: delet }})
+} catch {
+return conn.sendMessage(m.chat, { delete: m.quoted.vM.key })
+}}
+
 handler.help = ['delete']
-handler.tags = ['grupos']
-handler.command = /^del(ete)?$/i
+handler.tags = ['grupo']
+handler.command = ['del','delete']
+handler.group = false
 handler.admin = true
 handler.botAdmin = true
 
