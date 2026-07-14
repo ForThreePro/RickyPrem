@@ -7,7 +7,7 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isR
   let bot = global.db.data.settings[conn.user.jid] || {}
   let type = command.toLowerCase()
 
-  if (!args[0]) return m.reply(`⛈️ *RAYO PREM CONFIG* 🌙\n\n⚡ *Configuración incorrecta.*\n📌 *Uso:* ${usedPrefix + command} on/off\n*Ejemplo:* ${usedPrefix + command} on`)
+  if (!args[0]) return m.reply(`👾 *RICKY BOT PREM CONFIG*\n\n⚡ *Configuración incorrecta.*\n📌 *Uso:* ${usedPrefix + command} on/off\n*Ejemplo:* ${usedPrefix + command} on`)
 
   let fail = false
   switch (type) {
@@ -65,12 +65,12 @@ let handler = async (m, { conn, usedPrefix, command, args, isOwner, isAdmin, isR
   let rayoImg = existsSync(pathImg)? readFileSync(pathImg) : null
 
   let estadoTexto = isEnable? 'Activado ⚡' : 'Desactivado 🌑'
-  let emoji = isEnable? '🌩️' : '⛈️'
+  let emoji = isEnable? '⚡' : '⛈️'
 
-  let statusTxt = `${emoji} *RAYO PREM CONFIG* 🌙\n\n`
+  let statusTxt = `${emoji} *RICKY BOT PREM CONFIG*\n\n`
   statusTxt += `⚡ *Función:* ${type}\n`
   statusTxt += `📊 *Estado:* ${estadoTexto}\n\n`
-  statusTxt += `⛈️ *Team Nightwish*`
+  statusTxt += `👾 *Ricky Bot Prem*`
 
   if (rayoImg) {
     await conn.sendMessage(m.chat, {
