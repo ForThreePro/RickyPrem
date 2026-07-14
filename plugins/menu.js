@@ -3,7 +3,7 @@ import { readFileSync } from 'fs'
 
 let handler = async (m, { conn, usedPrefix }) => {
   let taguser = m.mentionedJid && m.mentionedJid[0]? m.mentionedJid[0] : m.quoted? m.quoted.sender : m.sender
-  const img = readFileSync(join(process.cwd(), 'storage', 'img', 'rayo.jpg'))
+  const img = readFileSync(join(process.cwd(), 'storage', 'img', 'rayo.jpg')) // cambia la imagen a ricky.jpg
 
   let totalUsers = Object.keys(global.db.data.users).length
   let totalCmds = Object.values(global.plugins).filter(p => p.help &&!p.disabled).length
@@ -22,20 +22,19 @@ let handler = async (m, { conn, usedPrefix }) => {
   let m2 = Math.floor(uptime / 60000) % 60
   let s = Math.floor(uptime / 1000) % 60
 
-  let menuText = `⚡━━━━━━━━⚡
-     ⛈️ *𝐑𝐀𝐘𝐎 𝐏𝐑𝐄𝐌 𝐁𝐎𝐓* ⛈️
-⚡━━━━━━━━⚡
+  let menuText = `👾━━━━━━━━👾
+     👾 *𝗥𝗜𝗖𝗞𝗬 𝗕𝗢𝗧 𝗣𝗥𝗘𝗠* 👾
+👾━━━━━━━━👾
 
-⚡ *Usuario:* @${taguser.split('@')[0]}
-⛈️ *Prefijo:* [ ${usedPrefix} ]
+👾 *Usuario:* @${taguser.split('@')[0]}
+⚡ *Prefijo:* [ ${usedPrefix} ]
 ⏰ *Activo:* ${h}h ${m2}m ${s}s
 
-⚡━━ *ESTADISTICAS* ━━⚡
+👾━━ *ESTADISTICAS* ━━👾
 📊 *Comandos:* ${totalCmds}
 👥 *Usuarios:* ${totalUsers}
-🌐 *Web:* forthreepro.github.io/For-Three-Bot
 
-⚡━━ *FECHA Y HORA* ━━⚡
+👾━━ *FECHA Y HORA* ━━👾
 📅 *Día:* ${dia}
 📆 *Fecha:* ${fechaCompleta}
 🕐 *Hora:* ${hora}
@@ -54,27 +53,26 @@ let handler = async (m, { conn, usedPrefix }) => {
 
   let emojis = {
     'downloader': '📥', 'search': '🔍', 'config': '⚙️', 'group': '👥',
-    'info': 'ℹ️', 'fun': '🎭', 'sticker': '⚡', 'owner': '👑',
+    'info': 'ℹ️', 'fun': '🎭', 'sticker': '👾', 'owner': '👑',
     'anime': '🌸', 'rg': '💎', 'game': '🎮', 'general': '✨'
   }
 
   for (let category in groups) {
-    let emoji = emojis[category] || '⛈️'
-    menuText += `⚡━━ ${emoji} *${category.toUpperCase()}* ━━⚡\n`
+    let emoji = emojis[category] || '👾'
+    menuText += `👾━━ ${emoji} *${category.toUpperCase()}* ━━👾\n`
     for (let cmd of groups[category]) {
-      menuText += `⛈️ ${usedPrefix}${cmd}\n`
+      menuText += `⚡ ${usedPrefix}${cmd}\n`
     }
     menuText += `\n`
   }
 
-  menuText += `⚡━━━━━━━━━━━━━━━━
-⛈️ *BOT:* Rayo Prem Bot
+  menuText += `👾━━━━━━━━
+👾 *BOT:* Ricky Bot Prem
 ⚡ *Creador:* Whois Yallico 👑
-⛈️ *Versión:* 3.0.0 Thunder Edition
-🌐 *Web Oficial:* https://forthreepro.github.io/For-Three-Bot
+👾 *Versión:* 3.0.0 Prem Edition
 
-> *"Domina el trueno, domina el chat"* ⚡
-⚡━━━━━━━━`
+> *"Ricky Bot Prem al servicio del chat"* 👾
+👾━━━━━━━━`
 
   await conn.sendMessage(m.chat, {
     image: img,
